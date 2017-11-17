@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    card_view:cardCornerRadius="7dp"
+    card_view:cardPreventCornerOverlap="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/imgBanner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/banner_image"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/imgDeveloper"
+            android:layout_width="@dimen/developer_image"
+            android:layout_height="@dimen/developer_image"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/item_bottom_margin"
+            android:layout_marginTop="@dimen/developer_image_margin" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/txt1"
+            style="@style/DialogText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/item_bottom_margin"
+            android:gravity="center_horizontal"
+            android:text="Hi, ich bin Hannes, der Entwicker vn On Air" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/txt2"
+            style="@style/DialogText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/item_bottom_margin"
+            android:gravity="center_horizontal"
+            android:text="Kleine App-Entwicker wie wir leben von gutten Bewertungen im App-Store" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/txt3"
+            style="@style/DialogText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/item_bottom_margin"
+            android:gravity="center_horizontal"
+            android:text="Wenn Ihnen unsere App gefallt dann bewertend Sie uns doch bitte." />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/txt4"
+            style="@style/DialogText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:gravity="center_horizontal"
+            android:text="Sternchen reichen - dauert nur 1 Minute" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/btn_cancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/grey"
+                android:gravity="center"
+                android:padding="15dp"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/btn_text_size"
+                tools:text="Cancel" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/btn_ok"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/blue"
+                android:gravity="center"
+                android:padding="15dp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/btn_text_size"
+                tools:text="Ok" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

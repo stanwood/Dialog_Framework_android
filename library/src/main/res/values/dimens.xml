@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="item_bottom_margin">20dp</dimen>
+    <dimen name="dialog_margin">40dp</dimen>
+    <dimen name="developer_image">120dp</dimen>
+    <dimen name="developer_image_margin">-60dp</dimen>
+    <dimen name="banner_image">120dp</dimen>
+    <dimen name="btn_text_size">16sp</dimen>
+    <dimen name="text_size">15sp</dimen>
+
+</resources>
