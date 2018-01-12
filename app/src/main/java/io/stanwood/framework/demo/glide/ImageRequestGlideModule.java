@@ -1,4 +1,4 @@
-package io.stanwood.framework.dialog.glide;
+package io.stanwood.framework.demo.glide;
 
 import android.content.Context;
 

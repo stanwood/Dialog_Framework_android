@@ -12,8 +12,10 @@ public final class Preferences {
     private static final String KEY_REMIND_DATE = "REMIND_DATE";
     private static final String KEY_LAUNCH_COUNTER = "LAUNCH_COUNTER";
     private static final String KEY_RATED = "RATED";
+    private static final String KEY_DIALOG_SHOWN = "KEY_DIALOG_SHOWN";
 
-    private Preferences() {}
+    private Preferences() {
+    }
 
     public static void storeStartDate(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -53,6 +55,16 @@ public final class Preferences {
     public static boolean getRated(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getBoolean(KEY_RATED, false);
+    }
+
+    public static void storeDialogShown(Context context, boolean b) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        preferences.edit().putBoolean(KEY_DIALOG_SHOWN, b).apply();
+    }
+
+    public static boolean getDialogShown(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getBoolean(KEY_DIALOG_SHOWN, false);
     }
 
     public static void reset(Context context) {

@@ -5,20 +5,16 @@ import android.content.Context;
 
 public class RatingService {
 
-    static RatingService instance;
+    private Context appContext;
+    private long launchTimes;
 
-    Context appContext;
-    long launchTimes;
-
-    public static synchronized RatingService with(Context context) {
-        if (instance == null) {
-            instance = new RatingService(context.getApplicationContext());
-        }
-        return instance;
+    public RatingService(Context context) {
+        this.appContext = context.getApplicationContext();
+        init();
     }
 
-    private RatingService(Context context) {
-        this.appContext = context;
+    public boolean shouldBeDisplayed() {
+        return !Preferences.getDialogShown(appContext) && Preferences.getLaunchTimes(appContext) >= launchTimes;
     }
 
     public RatingService setLaunchTimes(long launchTimes) {
@@ -26,20 +22,12 @@ public class RatingService {
         return this;
     }
 
-    public void init() {
+    private void init() {
         long counter = Preferences.getLaunchTimes(appContext);
         if (counter == 0) {
             Preferences.storeStartDate(appContext);
         }
         Preferences.storeLaunchTimes(appContext, counter + 1);
-    }
-
-    public static boolean shouldBeDisplayed() {
-        if (!Preferences.getRated(instance.appContext) &&
-                Preferences.getLaunchTimes(instance.appContext) > instance.launchTimes) {
-            return true;
-        }
-        return false;
     }
 
     public void reset() {
