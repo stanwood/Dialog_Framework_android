@@ -35,10 +35,13 @@ dependencies {
     compileOnly "com.github.bumptech.glide:glide:$rootProject.ext.glideVersion"
     implementation "com.android.support:appcompat-v7:$rootProject.ext.supportLibVersion"
 
-    //stanwood framework
+    //stanwood ui framework
     implementation 'com.github.stanwood.Core_Framework_android:framework-base:develop-SNAPSHOT'
     implementation 'com.github.stanwood.Core_Framework_android:framework-ui:develop-SNAPSHOT'
-    implementation 'com.github.stanwood.Analytics_Framework_android:firebasetrackingprovider:develop-SNAPSHOT'
+
+    //stanwood analytics framework
+    implementation 'com.github.stanwood.Analytics_Framework_android:stanwoodanalytics:develop-SNAPSHOT'
+    implementation 'com.github.stanwood.Analytics_Framework_android:generictracker:develop-SNAPSHOT'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
