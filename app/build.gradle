@@ -32,7 +32,7 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.dagger_version"
 
     //stanwood framework
-    //implementation 'com.github.stanwood:Dialog_Framework_android:feature~design_improvements-SNAPSHOT'
-    implementation 'com.github.stanwood.Core_Framework_android:framework-base:develop-SNAPSHOT'
-    implementation 'com.github.stanwood.Core_Framework_android:framework-ui:develop-SNAPSHOT'
+    //implementation 'com.github.stanwood:Dialog_Framework_android:<put latest version here>'
+    implementation "com.github.stanwood.Core_Framework_android:framework-base:$rootProject.ext.core_framework_version"
+    implementation "com.github.stanwood.Core_Framework_android:framework-ui:$rootProject.ext.core_framework_version"
 }
