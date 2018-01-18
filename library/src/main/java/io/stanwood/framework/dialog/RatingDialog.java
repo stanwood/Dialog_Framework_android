@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Outline;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import io.stanwood.framework.analytics.BaseAnalyticsTracker;
 import io.stanwood.framework.content.IntentCreator;
 
 public class RatingDialog extends DialogFragment {
@@ -31,6 +33,8 @@ public class RatingDialog extends DialogFragment {
     private String faceUrl;
     private String cancelText;
     private String okText;
+    private BaseAnalyticsTracker analyticsTracker;
+    private boolean okPressed = false;
 
     public static RatingDialog createInstance(Builder builder) {
         RatingDialog f = createInstance(
@@ -95,6 +99,7 @@ public class RatingDialog extends DialogFragment {
         setCancelable(false);
         processArguments();
         initViews(view);
+        track("rating_dialog_shown");
         return view;
     }
 
@@ -137,6 +142,7 @@ public class RatingDialog extends DialogFragment {
                     activity.startActivity(intent);
                     Preferences.storeRated(activity, true);
                 }
+                okPressed = true;
                 dismiss();
             }
         });
@@ -173,8 +179,19 @@ public class RatingDialog extends DialogFragment {
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
+        track(okPressed ? "rating_dialog_yes_pressed" : "rating_dialog_no_pressed");
+        analyticsTracker = null;
     }
 
+    public void setAnalytics(@Nullable BaseAnalyticsTracker baseAnalyticsTracker) {
+        analyticsTracker = baseAnalyticsTracker;
+    }
+
+    private void track(String s) {
+        if (analyticsTracker != null) {
+            analyticsTracker.trackScreenView(s);
+        }
+    }
 
     public static final class Builder {
         private String text1;
