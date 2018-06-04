@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="item_bottom_margin">10dp</dimen>
+    <dimen name="dialog_margin">40dp</dimen>
+    <dimen name="developer_image">100dp</dimen>
+    <dimen name="developer_image_upper_margin">-50dp</dimen>
+    <dimen name="text_size">14sp</dimen>
+    <dimen name="item_padding">24dp</dimen>
+    <dimen name="margin_developer_img">16dp</dimen>
+    <dimen name="aspect_ratio">1.77</dimen>
+    <dimen name="btn_margin">8dp</dimen>
+    <dimen name="img_elevation">30dp</dimen>
+</resources>
