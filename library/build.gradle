@@ -23,13 +23,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
-repositories {
-    jcenter()
-    maven { url 'https://maven.fabric.io/public' }
-    flatDir {
-        dirs 'libs'
-    }
-}
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -38,7 +31,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 10
-        versionName "1.0.1"
+        versionName "1.0.2"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
