@@ -50,6 +50,7 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -62,7 +63,9 @@ import io.stanwood.framework.base.Intents;
 public class RatingDialog extends DialogFragment {
     private List<CharSequence> texts = new ArrayList<>();
     private String bannerUrl;
+    @DrawableRes private int bannerRes;
     private String faceUrl;
+    @DrawableRes private int faceRes;
     private String cancelText;
     private String okText;
     private AnalyticsTracker analyticsTracker;
@@ -72,7 +75,9 @@ public class RatingDialog extends DialogFragment {
         Bundle bundle = new Bundle();
         bundle.putCharSequenceArrayList("texts", builder.texts);
         bundle.putString("bannerUrl", builder.bannerUrl);
+        bundle.putInt("bannerRes", builder.bannerRes);
         bundle.putString("faceUrl", builder.faceUrl);
+        bundle.putInt("faceRes", builder.faceRes);
         bundle.putString("cancelText", builder.cancelText);
         bundle.putString("okText", builder.okText);
         RatingDialog f = new RatingDialog();
@@ -90,7 +95,9 @@ public class RatingDialog extends DialogFragment {
         if (b != null) {
             texts = b.getCharSequenceArrayList("texts");
             bannerUrl = b.getString("bannerUrl");
+            bannerRes = b.getInt("bannerRes");
             faceUrl = b.getString("faceUrl");
+            faceRes = b.getInt("faceRes");
             cancelText = b.getString("cancelText");
             okText = b.getString("okText");
         }
@@ -165,8 +172,16 @@ public class RatingDialog extends DialogFragment {
     }
 
     private void setImages(View view) {
-        Glide.with(this).load(bannerUrl).into(view.<ImageView>findViewById(R.id.imgBanner));
-        Glide.with(this).load(faceUrl).apply(RequestOptions.circleCropTransform()).into(view.<ImageView>findViewById(R.id.imgDeveloper));
+        if (bannerUrl != null && !bannerUrl.isEmpty()) {
+            Glide.with(this).load(bannerUrl).into(view.<ImageView>findViewById(R.id.imgBanner));
+        } else {
+            Glide.with(this).load(bannerRes).into(view.<ImageView>findViewById(R.id.imgBanner));
+        }
+        if (faceUrl != null && !faceUrl.isEmpty()) {
+            Glide.with(this).load(faceUrl).apply(RequestOptions.circleCropTransform()).into(view.<ImageView>findViewById(R.id.imgDeveloper));
+        } else {
+            Glide.with(this).load(faceRes).apply(RequestOptions.circleCropTransform()).into(view.<ImageView>findViewById(R.id.imgDeveloper));
+        }
     }
 
     private void setButtons(View view) {
@@ -217,7 +232,9 @@ public class RatingDialog extends DialogFragment {
     public static final class Builder {
         private ArrayList<CharSequence> texts = new ArrayList<>();
         private String bannerUrl;
+        @DrawableRes private int bannerRes;
         private String faceUrl;
+        @DrawableRes private int faceRes;
         private String cancelText;
         private String okText;
         private AnalyticsTracker analyticsTracker;
@@ -254,8 +271,18 @@ public class RatingDialog extends DialogFragment {
             return this;
         }
 
+        public Builder setBannerRes(@DrawableRes int val) {
+            bannerRes = val;
+            return this;
+        }
+
         public Builder setFaceUrl(String val) {
             faceUrl = val;
+            return this;
+        }
+
+        public Builder setFaceRes(@DrawableRes int val) {
+            faceRes = val;
             return this;
         }
 
@@ -266,6 +293,14 @@ public class RatingDialog extends DialogFragment {
 
         public RatingDialog build() {
             return RatingDialog.createInstance(this);
+        }
+
+        public void show(final FragmentActivity activity) {
+            if (activity.getSupportFragmentManager().findFragmentByTag("stanwood_rating_dialog") != null) {
+                return;
+            }
+
+            RatingDialog.createInstance(Builder.this).show(activity.getSupportFragmentManager(), "stanwood_rating_dialog");
         }
 
         public void preloadAndShow(final FragmentActivity activity) {

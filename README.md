@@ -82,9 +82,12 @@ public class MainActivity extends AppCompatActivity {
                      .setCancelText("Cancel")
                      .setOkText("Ok")
                      .setBannerUrl("https://media.istockphoto.com/photos/plitvice-lakes-picture-id500463760?s=2048x2048")
+                 	 // alternatively: .setBannerDrawable(bannerDrawableResId)
                      .setFaceUrl("https://lh5.googleusercontent.com/-_w2wo1s6SkI/AAAAAAAAAAI/AAAAAAAAhMU/s78iSxXwVZk/photo.jpg")
+                 	 // alternatively: .setFaceDrawable(bannerDrawableResId)
                      //.setAnalyticsTracker(add analytics instance here)
                      .preloadAndShow(this);
+            		 // alternatively just .show(this) if you don't need to preload images (e.g. because you provide them locally via Drawable resources)
             }
         }
     }
