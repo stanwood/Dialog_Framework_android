@@ -1,77 +1,82 @@
+/*
+ * Copyright (c) 2018 stanwood Gmbh
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package io.stanwood.framework.dialog;
 
 import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Context;
+import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.graphics.Outline;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.IdRes;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
+import android.text.Spanned;
+import android.text.SpannedString;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import io.stanwood.framework.analytics.BaseAnalyticsTracker;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
+import io.stanwood.framework.analytics.generic.AnalyticsTracker;
+import io.stanwood.framework.analytics.generic.TrackerParams;
+import io.stanwood.framework.analytics.generic.TrackingEvent;
 import io.stanwood.framework.base.Intents;
 
 public class RatingDialog extends DialogFragment {
-
-    private String text1;
-    private String text2;
-    private String text3;
-    private String text4;
-    @IdRes private int bannerRes;
+    private List<CharSequence> texts = new ArrayList<>();
     private String bannerUrl;
-    @IdRes private int faceRes;
     private String faceUrl;
     private String cancelText;
     private String okText;
-    private BaseAnalyticsTracker analyticsTracker;
+    private AnalyticsTracker analyticsTracker;
     private boolean okPressed = false;
 
-    public static RatingDialog createInstance(Builder builder) {
-        RatingDialog f = createInstance(
-                builder.text1,
-                builder.text2,
-                builder.text3,
-                builder.text4,
-                builder.bannerUrl,
-                builder.faceUrl,
-                builder.cancelText,
-                builder.okText);
-        return f;
-    }
-
-    public static RatingDialog createInstance(String txt1, String txt2, String txt3, String txt4,
-                                              String bannerUrl, String faceUrl,
-                                              String cancelText, String okText) {
+    private static RatingDialog createInstance(Builder builder) {
         Bundle bundle = new Bundle();
-        bundle.putString("txt1", txt1);
-        bundle.putString("txt2", txt2);
-        bundle.putString("txt3", txt3);
-        bundle.putString("txt4", txt4);
-        bundle.putString("bannerUrl", bannerUrl);
-        bundle.putString("faceUrl", faceUrl);
-        bundle.putString("cancelText", cancelText);
-        bundle.putString("okText", okText);
+        bundle.putCharSequenceArrayList("texts", builder.texts);
+        bundle.putString("bannerUrl", builder.bannerUrl);
+        bundle.putString("faceUrl", builder.faceUrl);
+        bundle.putString("cancelText", builder.cancelText);
+        bundle.putString("okText", builder.okText);
         RatingDialog f = new RatingDialog();
+        f.setAnalyticsTracker(builder.analyticsTracker);
         f.setArguments(bundle);
         return f;
     }
@@ -83,10 +88,7 @@ public class RatingDialog extends DialogFragment {
     private void processArguments() {
         Bundle b = getArguments();
         if (b != null) {
-            text1 = b.getString("txt1");
-            text2 = b.getString("txt2");
-            text3 = b.getString("txt3");
-            text4 = b.getString("txt4");
+            texts = b.getCharSequenceArrayList("texts");
             bannerUrl = b.getString("bannerUrl");
             faceUrl = b.getString("faceUrl");
             cancelText = b.getString("cancelText");
@@ -105,68 +107,20 @@ public class RatingDialog extends DialogFragment {
         });
         view.setClipToOutline(true);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        Preferences.storeDialogShown(getActivity(), true);
         setCancelable(false);
         processArguments();
         initViews(view);
         track("rating_dialog_shown");
+        Preferences.storeDialogShown(getActivity(), true);
         return view;
     }
 
-    private void initViews(View view) {
-        //set texts
-        ((TextView) view.findViewById(R.id.txt1)).setText(text1);
-        ((TextView) view.findViewById(R.id.txt2)).setText(text2);
-        ((TextView) view.findViewById(R.id.txt3)).setText(text3);
-        ((TextView) view.findViewById(R.id.txt4)).setText(text4);
-
-        //head images
-        final ImageView imgShadow = view.findViewById(R.id.imgShadow);
-        imgShadow.setClipToOutline(true);
-        imgShadow.setOutlineProvider(new ViewOutlineProvider() {
-            @Override
-            public void getOutline(View view, Outline outline) {
-                outline.setOval(0, 0, imgShadow.getWidth(), imgShadow.getHeight());
-            }
-        });
-        final ImageView imgDeveloper = view.findViewById(R.id.imgDeveloper);
-        imgDeveloper.setOutlineProvider(new ViewOutlineProvider() {
-            @Override
-            public void getOutline(View view, Outline outline) {
-                outline.setOval(0, 0, imgDeveloper.getWidth(), imgDeveloper.getHeight());
-            }
-        });
-        imgDeveloper.setClipToOutline(true);
-        ImageView imgBanner = view.findViewById(R.id.imgBanner);
-        Glide.with(this).load(bannerUrl).into(imgBanner);
-        Glide.with(this).load(faceUrl).into(imgDeveloper);
-
-        Button btnOk = view.findViewById(R.id.btn_ok);
-        btnOk.setText(okText);
-        btnOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Activity activity = getActivity();
-                if (activity != null) {
-                    Intents.INSTANCE.createPlayStoreIntent(activity);
-                    Preferences.storeRated(activity, true);
-                }
-                okPressed = true;
-                dismiss();
-            }
-        });
-
-        Button btnCancel = view.findViewById(R.id.btn_cancel);
-        btnCancel.setText(cancelText);
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getShowsDialog())
-                    getDialog().cancel();
-                else
-                    dismiss();
-            }
-        });
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
     }
 
     @Override
@@ -192,46 +146,96 @@ public class RatingDialog extends DialogFragment {
         analyticsTracker = null;
     }
 
-    public void setAnalytics(@Nullable BaseAnalyticsTracker baseAnalyticsTracker) {
-        analyticsTracker = baseAnalyticsTracker;
+    private void initViews(View view) {
+        setTexts(view);
+        setImages(view);
+        setButtons(view);
+    }
+
+    private void setTexts(View view) {
+        ViewGroup viewGroup = view.findViewById(R.id.textContainer);
+        for (int size = texts.size(), i = 0; i < size; i++) {
+            TextView textView = new TextView(getContext(), null, 0, R.style.DialogText);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.topMargin = i > 0 ? (int) getResources().getDimension(R.dimen.item_bottom_margin) : 0;
+            textView.setLayoutParams(lp);
+            textView.setText(texts.get(i));
+            viewGroup.addView(textView);
+        }
+    }
+
+    private void setImages(View view) {
+        Glide.with(this).load(bannerUrl).into(view.<ImageView>findViewById(R.id.imgBanner));
+        Glide.with(this).load(faceUrl).apply(RequestOptions.circleCropTransform()).into(view.<ImageView>findViewById(R.id.imgDeveloper));
+    }
+
+    private void setButtons(View view) {
+        Button btnOk = view.findViewById(R.id.btn_ok);
+        btnOk.setText(okText);
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity activity = getActivity();
+                if (activity != null) {
+                    try {
+                        Intent intent = Intents.INSTANCE.createPlayStoreIntent(activity);
+                        activity.startActivity(intent);
+                    } catch (ActivityNotFoundException ex) {
+                        //rooted phone, no need to do anything here
+                    }
+                    Preferences.storeRated(activity, true);
+                }
+                okPressed = true;
+                dismiss();
+            }
+        });
+
+        Button btnCancel = view.findViewById(R.id.btn_cancel);
+        btnCancel.setText(cancelText);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getShowsDialog()) {
+                    getDialog().cancel();
+                } else {
+                    dismiss();
+                }
+            }
+        });
+    }
+
+    private void setAnalyticsTracker(AnalyticsTracker analyticsTracker) {
+        this.analyticsTracker = analyticsTracker;
     }
 
     private void track(String s) {
         if (analyticsTracker != null) {
-            analyticsTracker.trackScreenView(s);
+            analyticsTracker.trackEvent(TrackerParams.builder(TrackingEvent.SCREEN_VIEW).setName(s).build());
         }
     }
 
     public static final class Builder {
-        private String text1;
-        private String text2;
-        private String text3;
-        private String text4;
+        private ArrayList<CharSequence> texts = new ArrayList<>();
         private String bannerUrl;
         private String faceUrl;
         private String cancelText;
         private String okText;
+        private AnalyticsTracker analyticsTracker;
 
         private Builder() {
         }
 
-        public Builder setParagraph1(String val) {
-            text1 = val;
+        private static Spanned formatNewLines(@Nullable String s) {
+            return new SpannedString(s != null ? s.replaceAll("\\\\n", "\n") : "");
+        }
+
+        public Builder addParagraph(CharSequence val) {
+            texts.add(val);
             return this;
         }
 
-        public Builder setParagraph2(String val) {
-            text2 = val;
-            return this;
-        }
-
-        public Builder setParagraph3(String val) {
-            text3 = val;
-            return this;
-        }
-
-        public Builder setParagraph4(String val) {
-            text4 = val;
+        public Builder addParagraph(String val) {
+            addParagraph(formatNewLines(val));
             return this;
         }
 
@@ -255,8 +259,28 @@ public class RatingDialog extends DialogFragment {
             return this;
         }
 
+        public Builder setAnalyticsTracker(AnalyticsTracker analyticsTracker) {
+            this.analyticsTracker = analyticsTracker;
+            return this;
+        }
+
         public RatingDialog build() {
             return RatingDialog.createInstance(this);
+        }
+
+        public void preloadAndShow(final FragmentActivity activity) {
+            if (activity.getSupportFragmentManager().findFragmentByTag("stanwood_rating_dialog") != null) {
+                return;
+            }
+            List<String> lst = new ArrayList<>();
+            lst.add(bannerUrl);
+            lst.add(faceUrl);
+            ImagePreloader.create(activity, lst, activity.getLifecycle(), new ImagePreloader.LoaderCallback() {
+                @Override
+                public void onLoadFinished() {
+                    RatingDialog.createInstance(Builder.this).show(activity.getSupportFragmentManager(), "stanwood_rating_dialog");
+                }
+            });
         }
     }
 }

@@ -1,8 +1,29 @@
+/*
+ * Copyright (c) 2018 stanwood Gmbh
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package io.stanwood.framework.dialog;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import java.util.Date;
 
@@ -17,59 +38,52 @@ public final class Preferences {
     private Preferences() {
     }
 
+    private static SharedPreferences getPreferences(Context context) {
+        return context.getSharedPreferences("rating_dialog", Context.MODE_PRIVATE);
+    }
+
     public static void storeStartDate(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().putLong(KEY_START_DATE, new Date().getTime()).apply();
+        getPreferences(context).edit().putLong(KEY_START_DATE, new Date().getTime()).apply();
     }
 
     public static long getStartDate(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getLong(KEY_START_DATE, 0);
+        return getPreferences(context).getLong(KEY_START_DATE, 0);
     }
 
     public static void storeRemindDate(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().putLong(KEY_REMIND_DATE, new Date().getTime()).apply();
+        getPreferences(context).edit().putLong(KEY_REMIND_DATE, new Date().getTime()).apply();
     }
 
     public static long getRemindDate(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getLong(KEY_REMIND_DATE, 0);
+        return getPreferences(context).getLong(KEY_REMIND_DATE, 0);
     }
 
     public static void storeLaunchTimes(Context context, long i) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().putLong(KEY_LAUNCH_COUNTER, i).apply();
+        getPreferences(context).edit().putLong(KEY_LAUNCH_COUNTER, i).apply();
     }
 
     public static long getLaunchTimes(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getLong(KEY_LAUNCH_COUNTER, 0);
+        return getPreferences(context).getLong(KEY_LAUNCH_COUNTER, 0);
     }
 
     public static void storeRated(Context context, boolean b) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().putBoolean(KEY_RATED, b).apply();
+        getPreferences(context).edit().putBoolean(KEY_RATED, b).apply();
     }
 
     public static boolean getRated(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getBoolean(KEY_RATED, false);
+        return getPreferences(context).getBoolean(KEY_RATED, false);
     }
 
     public static void storeDialogShown(Context context, boolean b) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().putBoolean(KEY_DIALOG_SHOWN, b).apply();
+        getPreferences(context).edit().putBoolean(KEY_DIALOG_SHOWN, b).apply();
     }
 
     public static boolean getDialogShown(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getBoolean(KEY_DIALOG_SHOWN, false);
+        return getPreferences(context).getBoolean(KEY_DIALOG_SHOWN, false);
     }
 
     public static void reset(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().clear().apply();
+        getPreferences(context).edit().clear().apply();
     }
 
 }
