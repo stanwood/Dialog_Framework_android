@@ -13,18 +13,21 @@
         android:background="#ffffff"
         android:orientation="vertical">
 
-        <io.stanwood.framework.widget.AspectRatioFrameLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:height_aspectRatio="1.5"
-            app:height_relative_to="width">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/imgBanner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop" />
-        </io.stanwood.framework.widget.AspectRatioFrameLayout>
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintDimensionRatio="H,3:2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <FrameLayout
             android:id="@+id/frameLayout"

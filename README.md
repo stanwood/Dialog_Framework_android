@@ -59,7 +59,7 @@ public class MyApp extends Application implements HasActivityInjector {
 ```
 
 Show the dialog within Activity
-```android
+```java
 public class MainActivity extends AppCompatActivity {
 
     @Inject
@@ -91,5 +91,4 @@ For more information check out the sample app.
 
 ## Roadmap
 
-- add analytics
 - add more possibilities about when to show the dialog

@@ -1,14 +1,20 @@
 package io.stanwood.framework.dialog;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.graphics.Outline;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +26,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.List;
+
 import io.stanwood.framework.analytics.BaseAnalyticsTracker;
-import io.stanwood.framework.content.IntentCreator;
+import io.stanwood.framework.base.Intents;
 
 public class RatingDialog extends DialogFragment {
 
@@ -29,7 +37,9 @@ public class RatingDialog extends DialogFragment {
     private String text2;
     private String text3;
     private String text4;
+    @IdRes private int bannerRes;
     private String bannerUrl;
+    @IdRes private int faceRes;
     private String faceUrl;
     private String cancelText;
     private String okText;
@@ -138,8 +148,7 @@ public class RatingDialog extends DialogFragment {
             public void onClick(View v) {
                 Activity activity = getActivity();
                 if (activity != null) {
-                    Intent intent = IntentCreator.createPlayStoreIntent(activity);
-                    activity.startActivity(intent);
+                    Intents.INSTANCE.createPlayStoreIntent(activity);
                     Preferences.storeRated(activity, true);
                 }
                 okPressed = true;
