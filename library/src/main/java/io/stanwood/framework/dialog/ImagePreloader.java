@@ -44,7 +44,7 @@ public class ImagePreloader implements LifecycleObserver {
     private Lifecycle lifecycle;
     private LoaderCallback callback;
     private int counter = 0;
-    private RequestListener requestListener = new RequestListener<Drawable>() {
+    private RequestListener<Drawable> requestListener = new RequestListener<Drawable>() {
         @Override
         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
             return false;

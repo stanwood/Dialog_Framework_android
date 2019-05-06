@@ -48,9 +48,9 @@
                 android:layout_height="0dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintDimensionRatio="H,0.56"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -58,17 +58,17 @@
             android:id="@+id/imgDeveloper"
             android:layout_width="@dimen/developer_image"
             android:layout_height="@dimen/developer_image"
-            android:layout_marginBottom="@dimen/item_padding"
             android:layout_marginStart="@dimen/margin_developer_img"
             android:layout_marginTop="@dimen/developer_image_upper_margin"
+            android:layout_marginBottom="@dimen/item_padding"
             android:background="@drawable/shape_oval_white"
-            android:elevation="@dimen/img_elevation"/>
+            android:elevation="@dimen/img_elevation" />
 
         <LinearLayout
             android:id="@+id/textContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"/>
+            android:orientation="vertical" />
 
 
         <RelativeLayout
@@ -78,23 +78,23 @@
             android:layout_marginTop="16dp"
             android:gravity="center_vertical">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_cancel"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/btn_margin"
                 android:layout_toStartOf="@+id/btn_ok"
-                tools:text="Cancel"/>
+                tools:text="Cancel" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_ok"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="@dimen/btn_margin"
-                tools:text="Ok"/>
+                tools:text="Ok" />
         </RelativeLayout>
 
     </LinearLayout>
